@@ -1081,6 +1081,54 @@ namespace miniHubo
 		
 
 		static void doAch2UDP() {
+			Console.WriteLine("Udp2Ref Mini-Hubo from Hubo-Ach");
+                        int RHYi = 26; //       Right Hip Yaw
+                        int RHRi = 27; //       Right Hip Roll
+                        int RHPi = 28; //       Right Hip Pitch
+                        int RKNi = 29; //       Right Knee Pitch
+                        int RAPi = 30; //       Right Ankle Pitch
+                        int RARi = 31; //       Right Ankle Roll
+
+                        int LHYi = 19; //       Left Hip Yaw
+                        int LHRi = 20; //       Left Hip Roll
+                        int LHPi = 21; //       Left Hip Pitch
+                        int LKNi = 22; //       Left Knee Pitch
+                        int LAPi = 23; //       Left Ankle Pitch
+                        int LARi = 24; //       Left Ankle Roll
+
+                        int RSPi = 11; //       Right Shoulder Pitch
+                        int RSRi = 12; //       Right Shoulder Roll
+                        int RSYi = 13; //       Right Shoulder Yaw
+                        int REBi = 14; //       Right Elbow Pitch
+                        int RWYi = 15; //  right wrist yaw
+                        int RWRi = 16; //  right wrist roll
+                        int RWPi = 17; //  right wrist Pitch
+
+                        int LSPi = 4;  //       Left Shoulder Pitch
+                        int LSRi = 5;  //       Left Shoulder Yaw
+                        int LSYi = 6;  //       Left Shoulder Roll
+                        int LEBi = 7;  //       Left Elbow Pitch
+                        int LWYi = 8;  //  left wrist yaw
+                        int LWRi = 9;  //  left wrist roll
+                        int LWPi = 10; //  left wrist pitch
+
+                        int NKYi = 1;  //  neck yaw
+                        int NK1i = 2;  //  neck 1
+                        int NK2i = 3;  //  neck 2
+
+                        int WSTi = 0;  //       Trunk Yaw
+
+                        int RF1i = 32; //       Right Finger
+                        int RF2i = 33; //       Right Finger
+                        int RF3i = 34; //       Right Finger
+                        int RF4i = 35; //       Right Finger
+                        int RF5i = 36; //       Right Finger
+                        int LF1i = 37; //       Left Finger
+                        int LF2i = 38; //       Left Finger
+                        int LF3i = 39; //       Left Finger
+                        int LF4i = 40; //       Left Finger
+                        int LF5i = 41; //       Left Finger
+
 			IPAddress rxAddress = IPAddress.Any;
                		IPEndPoint rxEndPoint;
                 	UdpClient sock;
@@ -1091,9 +1139,36 @@ namespace miniHubo
 
 			while(true){
                           byte[] rxData = sock.Receive(ref rxEndPoint);
-                          double WST = BitConverter.ToDouble(rxData,0*4);
-                          double RHY = BitConverter.ToDouble(rxData,1*8);
-			  Console.WriteLine("WST = "+WST.ToString()+" NKY = "+ RHY.ToString());
+//                          double WST = BitConverter.ToDouble(rxData,0*4);
+//                          double RHY = BitConverter.ToDouble(rxData,1*8);
+//			  Console.WriteLine("WST = "+WST.ToString()+" NKY = "+ RHY.ToString());
+
+
+			  doIK.motorDesAngle[doIK.WST] = BitConverter.ToDouble(rxData,WSTi*4);
+
+			  doIK.motorDesAngle[doIK.RSP] = BitConverter.ToDouble(rxData,RSPi*4);
+			  doIK.motorDesAngle[doIK.RSR] = BitConverter.ToDouble(rxData,RSRi*4);
+			  doIK.motorDesAngle[doIK.RSY] = BitConverter.ToDouble(rxData,RSYi*4);
+			  doIK.motorDesAngle[doIK.REB] = BitConverter.ToDouble(rxData,REBi*4);
+			  
+			  doIK.motorDesAngle[doIK.LSP] = BitConverter.ToDouble(rxData,LSPi*4);
+			  doIK.motorDesAngle[doIK.LSR] = BitConverter.ToDouble(rxData,LSRi*4);
+			  doIK.motorDesAngle[doIK.LSY] = BitConverter.ToDouble(rxData,LSYi*4);
+			  doIK.motorDesAngle[doIK.LEB] = BitConverter.ToDouble(rxData,LEBi*4);
+			  
+			  doIK.motorDesAngle[doIK.RHP] = BitConverter.ToDouble(rxData,RHPi*4);
+			  doIK.motorDesAngle[doIK.RHR] = BitConverter.ToDouble(rxData,RHRi*4);
+			  doIK.motorDesAngle[doIK.RHY] = BitConverter.ToDouble(rxData,RHYi*4);
+			  doIK.motorDesAngle[doIK.RKN] = BitConverter.ToDouble(rxData,RKNi*4);
+			  doIK.motorDesAngle[doIK.RAP] = BitConverter.ToDouble(rxData,RAPi*4);
+			  doIK.motorDesAngle[doIK.RAR] = BitConverter.ToDouble(rxData,RARi*4);
+		
+			  doIK.motorDesAngle[doIK.LHP] = BitConverter.ToDouble(rxData,LHPi*4);
+			  doIK.motorDesAngle[doIK.LHR] = BitConverter.ToDouble(rxData,LHRi*4);
+			  doIK.motorDesAngle[doIK.LHY] = BitConverter.ToDouble(rxData,LHYi*4);
+			  doIK.motorDesAngle[doIK.LKN] = BitConverter.ToDouble(rxData,LKNi*4);
+			  doIK.motorDesAngle[doIK.LAP] = BitConverter.ToDouble(rxData,LAPi*4);
+			  doIK.motorDesAngle[doIK.LAR] = BitConverter.ToDouble(rxData,LARi*4);
 //			  doIK.motorDesAngle[doIK.RAP] = 0;
 //			  setMotorAll(dynTop, dynBottom);
 			}
