@@ -1,4 +1,6 @@
 using System;
+using System.Net;
+using System.Net.Sockets;
 using System.Threading;
 using System.Timers;
 
@@ -9,6 +11,12 @@ namespace miniHubo
 {
 	class MainClass
 	{
+		int HUBO_JOINT_COUNT = 42;              ///> The max number of joints
+
+//                struct hubo_ref {
+//                  double[HUBO_JOINT_COUNT] r;// = new double[HUBO_JOINT_COUNT];   // joint reference
+//                  int[HUBO_JOINT_COUNT] mode[HUBO_JOINT_COUNT];//   = new double[HUBO_JOINT_COUNT];         // mode 0 = filter mode, 1 = direct reference mode
+//                };
 		
 		static System.Timers.Timer aTimer;
 		static IK2D doIK;
@@ -1071,6 +1079,25 @@ namespace miniHubo
 		{
 		}
 		
+
+		static void doAch2UDP() {
+			IPAddress rxAddress = IPAddress.Any;
+               		IPEndPoint rxEndPoint;
+                	UdpClient sock;
+                	//private byte[] rxBuff = new byte[1024];
+                	int socketNum = 5005;	
+			rxEndPoint = new IPEndPoint(rxAddress, socketNum);
+                        sock = new UdpClient(socketNum);	
+
+			while(true){
+                          byte[] rxData = sock.Receive(ref rxEndPoint);
+                          double WST = BitConverter.ToDouble(rxData,0*4);
+                          double RHY = BitConverter.ToDouble(rxData,1*8);
+			  Console.WriteLine("WST = "+WST.ToString()+" NKY = "+ RHY.ToString());
+//			  doIK.motorDesAngle[doIK.RAP] = 0;
+//			  setMotorAll(dynTop, dynBottom);
+			}
+		}
 		static void menu()
 		{
 			
@@ -1093,6 +1120,7 @@ namespace miniHubo
 					Console.WriteLine("(9) Set Motor Angel");
 					Console.WriteLine("(10) UDP Conducting Loop");
 					Console.WriteLine("(11) UDP Conducting Loop STOP");
+					Console.WriteLine("(12) Ach2UDP");
 					Console.Write("Choice: ");
 					string theChoiceString = Console.ReadLine();
 					
@@ -1191,6 +1219,10 @@ namespace miniHubo
 				break;
 			case 11:
 				conduct.doUdpLoop = false;
+				break;
+			case 12:
+				Console.WriteLine("Ach2UDP");
+				doAch2UDP();
 				break;
 				
 			default:

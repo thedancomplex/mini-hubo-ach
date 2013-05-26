@@ -22,7 +22,7 @@ namespace miniHubo
 		private IPEndPoint rxEndPoint;
 		private UdpClient sock;
 		//private byte[] rxBuff = new byte[1024];
-		public int socketNum = 11000;
+		public int socketNum = 5005;
 		
 		
 		public conducting ()
@@ -194,7 +194,17 @@ namespace miniHubo
 			//				Commands the robot to go to the next beat
 			while(doUdpLoop)
 			{	
-				if( mode == 1 )	// mode 1
+
+
+                                if (mode == 1)
+				{
+					byte[] rxData = sock.Receive(ref rxEndPoint);
+					double WST = BitConverter.ToDouble(rxData,0*4);
+					double RHY = BitConverter.ToDouble(rxData,26*4);
+				        Console.WriteLine("WST = %f , RHY = %f",WST,RHY);	
+				}
+
+				if( mode == 111 )	// mode 1
 				{
 					Console.WriteLine("Waiting for UDP");
 					byte[] rxData = sock.Receive(ref rxEndPoint);
