@@ -703,13 +703,13 @@ namespace miniHubo
 			if(theOut)
 				Console.WriteLine("Dyn LEFT Setup Successfully");
 			else
-				Console.WriteLine("***ERROR*** Dyn LEFT NOT Setup Successfully");
+				Console.WriteLine("***ERROR*** Dyn LEFT NOT Setup Successfully: "+comLeft.ToString());
 			
 			theOut = dRight.ini();
 			if(theOut)
 				Console.WriteLine("Dyn RIGHT Setup Successfully");
 			else
-				Console.WriteLine("***ERROR*** Dyn RIGHT NOT Setup Successfully");
+				Console.WriteLine("***ERROR*** Dyn RIGHT NOT Setup Successfully "+comRight.ToString());
 			
 		}
 			
@@ -1080,6 +1080,11 @@ namespace miniHubo
 		}
 		
 
+static double rad2deg(double rad) {
+        
+	return (rad*180.0/3.1415962);
+}
+
 		static void doAch2UDP() {
 			Console.WriteLine("Udp2Ref Mini-Hubo from Hubo-Ach");
                         int RHYi = 26; //       Right Hip Yaw
@@ -1136,41 +1141,41 @@ namespace miniHubo
                 	int socketNum = 5005;	
 			rxEndPoint = new IPEndPoint(rxAddress, socketNum);
                         sock = new UdpClient(socketNum);	
-
+			int bitL = 8;
 			while(true){
                           byte[] rxData = sock.Receive(ref rxEndPoint);
 //                          double WST = BitConverter.ToDouble(rxData,0*4);
 //                          double RHY = BitConverter.ToDouble(rxData,1*8);
 //			  Console.WriteLine("WST = "+WST.ToString()+" NKY = "+ RHY.ToString());
 
+                          doIK.motorDesAngle[doIK.WST] = -rad2deg(BitConverter.ToDouble(rxData,WSTi*bitL));
 
-			  doIK.motorDesAngle[doIK.WST] = BitConverter.ToDouble(rxData,WSTi*4);
+                          doIK.motorDesAngle[doIK.RSP] = -rad2deg(BitConverter.ToDouble(rxData,RSPi*bitL));
+                          doIK.motorDesAngle[doIK.RSR] = -rad2deg(BitConverter.ToDouble(rxData,RSRi*bitL));
+                          doIK.motorDesAngle[doIK.RSY] = -rad2deg(BitConverter.ToDouble(rxData,RSYi*bitL));
+                          doIK.motorDesAngle[doIK.REB] = rad2deg(BitConverter.ToDouble(rxData,REBi*bitL));  // Broken
 
-			  doIK.motorDesAngle[doIK.RSP] = BitConverter.ToDouble(rxData,RSPi*4);
-			  doIK.motorDesAngle[doIK.RSR] = BitConverter.ToDouble(rxData,RSRi*4);
-			  doIK.motorDesAngle[doIK.RSY] = BitConverter.ToDouble(rxData,RSYi*4);
-			  doIK.motorDesAngle[doIK.REB] = BitConverter.ToDouble(rxData,REBi*4);
-			  
-			  doIK.motorDesAngle[doIK.LSP] = BitConverter.ToDouble(rxData,LSPi*4);
-			  doIK.motorDesAngle[doIK.LSR] = BitConverter.ToDouble(rxData,LSRi*4);
-			  doIK.motorDesAngle[doIK.LSY] = BitConverter.ToDouble(rxData,LSYi*4);
-			  doIK.motorDesAngle[doIK.LEB] = BitConverter.ToDouble(rxData,LEBi*4);
-			  
-			  doIK.motorDesAngle[doIK.RHP] = BitConverter.ToDouble(rxData,RHPi*4);
-			  doIK.motorDesAngle[doIK.RHR] = BitConverter.ToDouble(rxData,RHRi*4);
-			  doIK.motorDesAngle[doIK.RHY] = BitConverter.ToDouble(rxData,RHYi*4);
-			  doIK.motorDesAngle[doIK.RKN] = BitConverter.ToDouble(rxData,RKNi*4);
-			  doIK.motorDesAngle[doIK.RAP] = BitConverter.ToDouble(rxData,RAPi*4);
-			  doIK.motorDesAngle[doIK.RAR] = BitConverter.ToDouble(rxData,RARi*4);
-		
-			  doIK.motorDesAngle[doIK.LHP] = BitConverter.ToDouble(rxData,LHPi*4);
-			  doIK.motorDesAngle[doIK.LHR] = BitConverter.ToDouble(rxData,LHRi*4);
-			  doIK.motorDesAngle[doIK.LHY] = BitConverter.ToDouble(rxData,LHYi*4);
-			  doIK.motorDesAngle[doIK.LKN] = BitConverter.ToDouble(rxData,LKNi*4);
-			  doIK.motorDesAngle[doIK.LAP] = BitConverter.ToDouble(rxData,LAPi*4);
-			  doIK.motorDesAngle[doIK.LAR] = BitConverter.ToDouble(rxData,LARi*4);
+                          doIK.motorDesAngle[doIK.LSP] = -rad2deg(BitConverter.ToDouble(rxData,LSPi*bitL));
+                          doIK.motorDesAngle[doIK.LSR] =  rad2deg(BitConverter.ToDouble(rxData,LSRi*bitL));
+                          doIK.motorDesAngle[doIK.LSY] = -rad2deg(BitConverter.ToDouble(rxData,LSYi*bitL));
+                          doIK.motorDesAngle[doIK.LEB] = -rad2deg(BitConverter.ToDouble(rxData,LEBi*bitL));
+
+                          doIK.motorDesAngle[doIK.RHP] =  rad2deg(BitConverter.ToDouble(rxData,RHPi*bitL));
+                          doIK.motorDesAngle[doIK.RHR] =  rad2deg(BitConverter.ToDouble(rxData,RHRi*bitL));
+                          doIK.motorDesAngle[doIK.RHY] =  rad2deg(BitConverter.ToDouble(rxData,RHYi*bitL));
+                          doIK.motorDesAngle[doIK.RKN] =  rad2deg(BitConverter.ToDouble(rxData,RKNi*bitL));
+                          doIK.motorDesAngle[doIK.RAP] =  rad2deg(BitConverter.ToDouble(rxData,RAPi*bitL));
+                          doIK.motorDesAngle[doIK.RAR] =  rad2deg(BitConverter.ToDouble(rxData,RARi*bitL));
+
+                          doIK.motorDesAngle[doIK.LHP] =  rad2deg(BitConverter.ToDouble(rxData,LHPi*bitL));
+                          doIK.motorDesAngle[doIK.LHR] =  rad2deg(BitConverter.ToDouble(rxData,LHRi*bitL));
+                          doIK.motorDesAngle[doIK.LHY] =  rad2deg(BitConverter.ToDouble(rxData,LHYi*bitL));
+                          doIK.motorDesAngle[doIK.LKN] =  rad2deg(BitConverter.ToDouble(rxData,LKNi*bitL));
+                          doIK.motorDesAngle[doIK.LAP] =  rad2deg(BitConverter.ToDouble(rxData,LAPi*bitL));
+                          doIK.motorDesAngle[doIK.LAR] =  rad2deg(BitConverter.ToDouble(rxData,LARi*bitL));
+//			Console.WriteLine(doIK.motorDesAngle[doIK.RHR].ToString());
 //			  doIK.motorDesAngle[doIK.RAP] = 0;
-//			  setMotorAll(dynTop, dynBottom);
+			  setMotorAll(dynTop, dynBottom);
 			}
 		}
 		static void menu()
